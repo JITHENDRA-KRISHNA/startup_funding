@@ -1,0 +1,65 @@
+<html>
+<head>
+    <link rel="stylesheet" href="index.css">
+  <title>Admin_Home</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    .navar {
+      height: 10vh;
+      width: 100%;
+
+    }
+    .top{
+        height:10px;
+        background: none;
+       background-image:none;
+    }
+    .container {
+      display: flex;
+      min-height: 90vh;
+      width: 100%;
+    }
+
+    .left-section {
+      background-color: #f2f2f2;
+      flex-basis: 30%;
+      padding: 1%;
+    }
+
+    .right-section {
+      background-color: #ddd;
+      flex-basis: 70%;
+      padding: 1%;
+    }
+  </style>
+</head>
+<body>
+  <div class="navar">
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+   </head>
+<body>
+    <div class="main" id="top_most">
+        <div class="top">
+             <nav class="nav_bar">
+                <h1 id="title" style="padding-left:3%;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">UPCLICK LABS</h1>
+                <list id="menu2" class="Menu">
+                   <a href="/adminhome"><ul>view Requests</ul></a>
+                   <a href="#"><ul>Manage DB</ul></a>
+                   <a href="#"><ul>Modify</ul></a>
+                </list>
+                      <a href="/logoutadmin"><button id="signup">LOgOut <i class='fas fa-arrow-circle-right'></i></button></a>                
+             </nav> 
+             </div>
+  </div>
+  <%- include('admin_views.ejs')%>
+ <center></centre><h1>PLease approve pending requests!!</h1></center>
+
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+</body>
+</html>

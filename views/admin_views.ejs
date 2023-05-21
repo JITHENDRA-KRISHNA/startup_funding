@@ -1,0 +1,226 @@
+<html>
+<head>
+    <link rel="stylesheet" href="raise.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+    }
+#rightsection {
+    background-color: #ddd;
+    flex-basis: 70%;
+    padding: 2%;
+    overflow: scroll;
+  }
+.container {
+    display: flex;
+    height: 90%;
+  }
+
+  .left-section {
+    background-color: #f2f2f2;
+    flex-basis: 30%;
+    padding: 1%;
+  }
+ #loadingContainer {
+display: flex;
+justify-content: center;
+align-items: center;
+position: relative;
+left:170%;
+top:30%;
+z-index:5;
+
+}
+
+#loadingAnimation {
+width: 50px;
+height: 50px;
+border: 6px solid #f3f3f3;
+border-top: 6px solid #3734db;
+border-radius: 50%;
+animation: spin 1.3s ease-in infinite;
+}
+
+@keyframes spin {
+0% {
+  transform: rotate(0deg);
+  border-top: 6px solid #7f34db;
+}
+100% {
+  transform: rotate(360deg);
+}
+}
+#rightSection h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+.maincont{
+    width:100%;
+    min-height:100%;
+    background:#ffffff;
+    display: flex;
+    flex-direction:column;
+    border:1px solid black;
+    border-radius: 10px;
+    padding:5%;
+    margin-bottom:3%;
+    overflow: scroll;
+}
+.textstyle{
+    font-size:3vh;
+    padding:1%;
+    border-bottom:1px solid rgb(122, 122, 122);
+    margin-bottom:10px;
+    color: rgb(24, 24, 99);
+    box-shadow: -5px 5px 10px  rgb(214, 214, 214);
+    border-radius: 5px;
+}
+.buttonstyle{
+    width:40%;
+    height:10vh;
+}
+.btndiv{
+    display: flex;
+    justify-content: space-evenly;
+    width:100%;
+    height:10vh;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left-section">
+      <center><h2>Pending Requests:</h2></center><br>
+      <!-- <center><h3>Total Requests:</h3></center><br> -->
+      <center><h3>On Hold Requests:</h3></center><br>
+      <a style="margin:5%;"><button style="width:90%;height:10%;background-color: #ddd;font-size: 2vw" id="fetchDataButton">Refresh &#128472;</button></a>  
+      <div id="loadingContainer" style="display: none;">
+        <div id="loadingAnimation"></div>
+      </div>
+    </div>
+
+    <div id="rightsection">        
+          <h2>Details</h2><br>
+           <h3><p>Refresh to See The Pending Requests</p></h3>
+  </div>
+  </div>
+<script>
+
+const loadingContainer = document.getElementById('loadingContainer');
+const dataDisplay = document.getElementById('rightsection');
+const getDataButton = document.getElementById('fetchDataButton');
+// const datadisplay= document.getElementById('rightsection');
+
+getDataButton.addEventListener('click', () => {
+  loadingContainer.style.display = 'flex'; 
+  fetch('/getdata')
+    .then(response => response.json())
+    .then(data => {
+      loadingContainer.style.display = 'none'; 
+      dataDisplay.style.display = 'block'; 
+      dataDisplay.innerHTML = '';
+      data.forEach(item => {
+        const box=document.createElement('div');
+        const box2=document.createElement('div');
+        box.classList.add('maincont');
+        box2.classList.add('btndiv');
+        const Title=document.createElement('div');
+        const Name=document.createElement('div');
+        const Email=document.createElement('div');
+        const Address=document.createElement('div');
+        const MoneyToBeRaised=document.createElement('div');
+        const Time_Requested=document.createElement('div');
+        const User_Location=document.createElement('div');
+        const About_Idea=document.createElement('div');
+        const approveButton = document.createElement('button');
+        const HoldButton = document.createElement('button');
+
+        Title.innerHTML = `Title: ${item.idea_name}`;
+        Name.innerHTML = `Name: ${item.name}`;
+        Email.innerHTML = `Email: ${item.email}`;
+        Address.innerHTML = `Address: ${item.address}`;
+        MoneyToBeRaised.innerHTML = `MoneyToBeRaised: ${item.idea_money}`;
+        Time_Requested.innerHTML = `TIme_Requested: ${item.idea_time}`;
+        User_Location.innerHTML = `User_Location: ${item.idea_location}`;
+        About_Idea.innerHTML = `About_Idea: ${item.idea_details}`;
+        approveButton.textContent = 'APPROVE';
+        HoldButton.textContent= 'HOLD ';
+
+        Title.classList.add('textstyle')
+        Name.classList.add('textstyle')
+        Email.classList.add('textstyle')
+        Address.classList.add('textstyle')
+        MoneyToBeRaised.classList.add('textstyle')
+        Time_Requested.classList.add('textstyle')
+        User_Location.classList.add('textstyle')
+        About_Idea.classList.add('textstyle')
+        approveButton.classList.add('approveb','buttonstyle');
+        HoldButton.classList.add('approveb','buttonstyle');
+        approveButton.addEventListener('click',ApproveRequest);
+        // HoldButton.addEventListener('click', HoldRequest);
+        approveButton.setAttribute('data-itemid', item._id); 
+        // HoldButton.setAttribute('data-itemid', item._id); 
+       
+        Title.setAttribute('data-type', 'title');
+        Name.setAttribute('data-type', 'Name');
+        Email.setAttribute('data-type', 'Email');
+        Address.setAttribute('data-type', 'Address');
+        MoneyToBeRaised.setAttribute('data-type', 'MoneyToBeRaised');
+        Time_Requested.setAttribute('data-type', 'Time_Requested');
+        User_Location.setAttribute('data-type', 'User_Location');
+       About_Idea.setAttribute('data-type', 'About_Idea');
+
+        box2.append(approveButton,HoldButton);
+        box.append(Title,Name,Email,Address,MoneyToBeRaised,Time_Requested,User_Location,About_Idea,box2);
+        dataDisplay.appendChild(box);
+      });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+});
+
+
+function ApproveRequest(event) {
+  const itemDiv = event.target.closest('.maincont');
+
+  const Title = itemDiv.querySelector('.textstyle[data-type="title"]').textContent.split(":")[1];
+  const name = itemDiv.querySelector('.textstyle[data-type="Name"]').textContent.split(":")[1];
+  const Email = itemDiv.querySelector('.textstyle[data-type="Email"]').textContent.split(":")[1];
+  const Address = itemDiv.querySelector('.textstyle[data-type="Address"]').textContent.split(":")[1];
+  const MoneyToBeRaised2 = itemDiv.querySelector('.textstyle[data-type="MoneyToBeRaised"]').textContent.split(":")[1];
+  const Time_Requested = itemDiv.querySelector('.textstyle[data-type="Time_Requested"]').textContent.split(":")[1];
+  const User_Location = itemDiv.querySelector('.textstyle[data-type="User_Location"]').textContent.split(":")[1];
+  const About_Idea = itemDiv.querySelector('.textstyle[data-type="About_Idea"]').textContent.split(":")[1];
+  MoneyToBeRaised=parseInt(MoneyToBeRaised2.trim())
+  const requestData = {
+    Title,name ,Email,Address ,MoneyToBeRaised,Time_Requested , User_Location, About_Idea 
+  };
+// alert(typeof(requestData))
+  fetch('/api/approve', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestData),
+  })
+    .then(response => console.log(response.json()))
+    .then(  data => {
+      console.log("data:"+JSON.stringify(data.message));
+      // Handle the response from the server as needed
+    })
+    .catch(error => {
+      console.error("jsm2");
+      // Handle the error scenario
+    });
+}
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        html{
+    scroll-behavior: smooth;
+}
+.nav_bar{
+    background:transparent;
+       background-image:none;
+       backdrop-filter: blur(10px);
+       background:rgb(255, 255, 255,0.5);
+}
+.top{
+       height:10%;
+       width:100%;
+       background-image:none;
+    }
+    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup_Info</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+</head>
+<body id="cards_body" >
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+       </head>
+    <body>
+        <div class="main" id="top_most">
+                 <nav class="nav_bar">
+                    <h1 id="title" style="padding-left:3%;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">UPCLICK LABS</h1>
+                    <list id="menu2" class="Menu">
+                      <a href="/"><ul>Home</ul></a>
+                       <a href="/start"><ul>Start Your Own </ul></a>
+                       <a href="/dashboard"><ul>Bookmarked <i class='fas fa-bookmark' style="font-size: 20px;"></i></ul></a>
+                       <div class="search-container">
+                        <div class="search-icon">
+                          <i class="fas fa-search"></i>
+                        </div>
+                        <input type="text" class="search-input" placeholder="Search..." name="search" oninput="searchContent(this.value)">
+                      </div>
+                    </list>
+                <%- include('../partials/button.ejs') %>
+                    <!-- <a href="/" ><ul><button id="signup">Log Out <i class='fas fa-arrow-circle-right'></i></button></ul></a> -->
+               
+                    <button title="Menu_button" class="hamburger">
+                        <div id="d1"></div>
+                        <div id="d2"></div>
+                        <div id="d3"></div>
+                    </button>
+                 </nav> 
+                 <div id="exp_menu">
+                    <list id="exp_list"style="display: none;" >
+                        <a href="/cards"><ul>Invest</ul></a>
+                        <a href="/start"><ul>Start my Own</ul></a>
+                        <a href="/dashboard"><ul>Bookmarked </ul></a>
+                 </list>
+                </div>          
+    </body>
+    </html>
+    <div class="main_body">
+      <div class="filter_menu2">
+<button class="ios-button2" style="font-size: 20px;" onclick="filtermenuexp()"><i class="fa fa-filter"></i>Filters</button>
+<input type="text" class="remsr" placeholder="Search..." name="search" oninput="searchContent(this.value)">            
+</div>
+        <div class="filter_menu" >
+            <h3 id="hid"><center>Available_Filters</center></h3>
+<div class="foptions">
+<label for="category">Category:</label>
+<select id="category">
+  <option value="">All</option>
+  <option value="technology">Technology</option>
+  <option value="education">Education</option>
+  <option value="social-causes">Bussiness</option>
+</select>
+
+<label for="location">Location:</label>
+<select id="location">
+  <option value="">All</option>
+  <option value="local">Local</option>
+  <option value="national">National</option>
+  <option value="international">International</option>
+</select>
+
+<label for="funding-status">Funding Status:</label>
+<select id="funding-status">
+  <option value="">All</option>
+  <option value="funded">Funded</option>
+  <option value="in-progress">In Progress</option>
+  <option value="expired">Expired</option>
+</select>
+
+<label for="funding-goal">Funding Goal Range:</label>
+<div id="funding-goal-slider">
+    <div id="funding-goal-values">
+        <span id="funding-goal-min-value">0</span> - <span id="funding-goal-max-value">10000</span>
+      </div>
+  <input type="range" id="funding-goal-min" min="0" max="1000000" step="300" value="0">
+  <input type="range" id="funding-goal-max" min="0" max="1000000" step="300" value="10000">
+</div>
+
+<label for="sorting">Sort By:</label>
+<select id="sorting">
+  <option value="popularity">Popularity</option>
+  <option value="most-funded">Most Funded</option>
+  <option value="newest">Newest</option>
+  <option value="ending-soon">Ending Soon</option>
+</select>
+
+<label for="duration">Project Duration:</label>
+<select id="duration">
+  <option value="">All</option>
+  <option value="short">Short</option>
+  <option value="long">Long</option>
+</select>
+<label for="stage">Project Stage:</label>
+<select id="stage">
+  <option value="">All</option>
+  <option value="concept">Concept Stage</option>
+  <option value="prototype">Prototype Stage</option>
+  <option value="production">Production Stage</option>
+</select>
+<label id="vv" for="social-impact">Social Impact: &nbsp;<label class="ios-toggle">
+    <input type="checkbox" class="ios-toggle-input">
+    <span class="ios-toggle-slider"></span>
+  </label></label>
+<!-- <label  id="vv" for="rewards">Rewards or Perks: <label class="ios-toggle">
+    <input type="checkbox" class="ios-toggle-input">
+    <span class="ios-toggle-slider"></span>
+  </label></label> -->
+<button class="ios-button"><i style="font-size:24px" class="fa">&#xf058;</i></button>
+</div>
+</div>
+<div id="loadingContainer" style="display: none;z-index:10;">
+  <div id="loadingAnimation"></div>
+</div>
+            <div class="Frame">
+              
+            </div>     
+            <button id="to_top2"><a href="#filter_menu"> <i class='fas fa-angle-double-up' style="color:rgb(0, 0, 0);font-size:2vw;"></i></a></button>
+ 
+    </div>
+    <script type="text/javascript" src="main.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded',()=>{
+const loadingContainer = document.getElementById('loadingContainer');
+loadingContainer.style.display = 'flex'; 
+const container = document.querySelector('.Frame'); 
+fetch('/api/userspage')
+  .then(response => response.json())
+  .then(data => {
+    
+    data.forEach(item => {
+      const projectDiv = document.createElement('div');
+      projectDiv.classList.add('projects');
+      const projectId = item._id;
+      projectDiv.setAttribute('id', projectId);
+      const companyLogoInput = document.createElement('div');
+      companyLogoInput.type = 'image';
+      companyLogoInput.alt = 'Your_Logo';
+      companyLogoInput.innerHTML = 'Logo';
+      companyLogoInput.style.width = '70px';
+      companyLogoInput.classList.add('Company_Logo')
+      projectDiv.appendChild(companyLogoInput);
+
+      const projectNameHeading = document.createElement('h3');
+      projectNameHeading.textContent = item.Title;
+      projectNameHeading.id = 'Project_Namee';
+      projectNameHeading.classList.add('Project_Name');
+      projectDiv.appendChild(projectNameHeading);
+
+      const detailsBarDiv = document.createElement('div');
+      detailsBarDiv.classList.add('Details_Bar');
+      projectDiv.appendChild(detailsBarDiv);
+
+      const amountDiv = document.createElement('div');
+      amountDiv.classList.add('Amount');
+      const amountValue = document.createElement('p');
+      amountValue.textContent ="0";
+      const amountTotal = document.createElement('p');
+      amountTotal.textContent =item.MoneyToBeRaised;
+      amountDiv.appendChild(amountValue);
+      amountDiv.appendChild(amountTotal);
+      detailsBarDiv.appendChild(amountDiv);
+
+      const investorsCountDiv = document.createElement('div');
+      investorsCountDiv.classList.add('Investors_count');
+      const investorsCountValue = document.createElement('p');
+      investorsCountValue.textContent = "0";
+      const investorsCountLabel = document.createElement('p');
+      investorsCountLabel.textContent = 'investors';
+      investorsCountDiv.appendChild(investorsCountValue);
+      investorsCountDiv.appendChild(investorsCountLabel);
+      detailsBarDiv.appendChild(investorsCountDiv);
+
+      const timeDiv = document.createElement('div');
+      timeDiv.classList.add('Time');
+      const timeValue = document.createElement('p');
+      timeValue.textContent ="0";
+      const timeLabel = document.createElement('p');
+      timeLabel.textContent = 'days left';
+      timeDiv.appendChild(timeValue);
+      timeDiv.appendChild(timeLabel);
+      detailsBarDiv.appendChild(timeDiv);
+
+      const progressDiv = document.createElement('div');
+      progressDiv.classList.add('progress2');
+      const progressBar = document.createElement('progress');
+      progressBar.value = 30;
+      progressBar.max = 100;
+      progressDiv.appendChild(progressBar);
+      detailsBarDiv.appendChild(progressDiv);
+
+      const aboutDiv = document.createElement('div');
+      aboutDiv.classList.add('About');
+      const aboutParagraph = document.createElement('p');
+      aboutParagraph.textContent = 'ABOUT:';
+      const aboutDetailsParagraph = document.createElement('p');
+      aboutDetailsParagraph.classList.add('About2');
+      aboutDetailsParagraph.textContent = item.About_Idea;
+      aboutDiv.appendChild(aboutParagraph);
+      aboutDiv.appendChild(aboutDetailsParagraph);
+      projectDiv.appendChild(aboutDiv);
+
+      const optionsDiv = document.createElement('div');
+      optionsDiv.classList.add('options');
+      const backProjectButton = document.createElement('button');
+      backProjectButton.classList.add('backp');
+      backProjectButton.textContent = 'BACK PROJECT';
+
+      backProjectButton.addEventListener('click',()=>{
+        // fetch('/tokensplace',{method:'GET'}).then(response=>response.json()).then(data=>{
+        fetch('/cards/payment', {method: 'get'}).then(response=>{
+          window.location.href = '/cards/payment';
+        })
+      })
+     
+      const bookmarkButton = document.createElement('button');
+      bookmarkButton.classList.add('bookm');
+      bookmarkButton.setAttribute("id",projectId);
+      bookmarkButton.innerHTML = 'BOOKMARK <i class="fas fa-bookmark"></i>';
+      bookmarkButton.addEventListener('click', () => {
+            saveProject(bookmarkButton);
+      });
+
+      optionsDiv.appendChild(backProjectButton);
+      optionsDiv.appendChild(bookmarkButton);
+      projectDiv.appendChild(optionsDiv);
+
+
+      container.appendChild(projectDiv);
+      loadingContainer.style.display = 'none'; 
+    });
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+
+})
+////////////////////////////////////////////////////////////////////////////////
+function searchContent(searchTerm) {
+	if(searchTerm!=""){
+	const paragraphs = document.querySelectorAll('.About p');
+	paragraphs.forEach((paragraph) => {
+	  const content = paragraph.textContent;
+	  const words = content.split(' ');
+  
+	  const highlightedHTML = words
+		.map((word) => {
+		  const isMatch = word.toLowerCase().includes(searchTerm.toLowerCase());
+		  return isMatch ? `<span class="highlight">${word}</span>` : word;
+		})
+		.join(' ');
+  
+	  paragraph.innerHTML = highlightedHTML;
+	});
+    }
+	if(searchTerm===''){
+		removeHighlight();
+	}
+   }
+
+   function removeHighlight() {
+	const highlightedWords = document.querySelectorAll('.highlight');
+	highlightedWords.forEach((word) => {
+	  word.outerHTML = word.innerHTML;
+	});
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+  function filtermenuexp() {
+  const filterMenu = document.querySelector('.filter_menu');
+  const ser = document.querySelector('.remsr');
+  if (window.matchMedia('(max-width: 800px)').matches && filterMenu.style.display === 'none') {
+    filterMenu.style.display = 'block';
+    filterMenu.classList.add('men'); 
+    ser.style.display='none';
+  } else {
+    filterMenu.style.display = 'none';
+    filterMenu.classList.remove('men')
+    ser.classList.add('mens');
+    ser.style.display='block';
+
+  }
+}
+window.addEventListener('resize', toggleFilterMenu);
+toggleFilterMenu();
+function toggleFilterMenu() {
+  const filterMenu = document.querySelector('.filter_menu');
+  const filterMenu2 = document.querySelector('.filter_menu2');
+  const ser = document.querySelector('.remsr');
+  if (window.matchMedia('(min-width: 800px)').matches && filterMenu.style.display === 'none') {
+  filterMenu.style.display = 'block';
+  filterMenu2.style.display = 'none';
+  ser.style.display='none';
+  }
+  else {
+    filterMenu2.style.display = 'block';
+    ser.classList.add('mens')
+  }
+}
+function saveProject(button) {
+  fetch('/tokensplace',{method:'GET'}).then(response=>response.json()).then(data=>{
+    if(data==="notValid" || data==="expired"){
+      window.location.href="/login";
+      
+    }
+    const dataa=data.token;
+    if(dataa==="Valid"){
+      attaching(button,data._id);
+    }
+  });
+}
+async function attaching(button,userid){
+  const bookmarkIcon = button.querySelector('i.fa-bookmark');
+  const projectDiv = button.closest('.projects');
+  const projectId = projectDiv.id;
+  const userId=userid;
+  // alert(projectId+" "+userid);
+  const ids={
+    "projectid":projectId,
+    "userid":userId
+  }
+  await fetch('/users/bookmark',
+  {
+    method:"POST",headers: {'Content-Type': 'application/json'},body: JSON.stringify(ids)
+  })
+  .then(response=>response.json()).then(data=>{
+    if (data.success) {
+        if (data.bookmarked) {
+          button.innerHTML = 'BOOKMARKED ';
+          // bookmarkIcon.classList.toggle('fa-check-circle');
+          // storeBookmarkedProject(projectId);
+        } else {
+          button.innerHTML = 'BOOKMARK <i class="fas fa-bookmark"></i>';
+          // removeBookmarkedProject(projectId);
+        }
+      }
+   console.log(data);
+  })
+    //  bookmarkIcon.classList.toggle('fa-check-circle');
+ }
+
+ function storeBookmarkedProject(projectId) {
+  const bookmarkedProjects = localStorage.getItem('bookmarkedProjects');
+  let projects = [];
+  if (bookmarkedProjects) {
+    projects = JSON.parse(bookmarkedProjects);
+  }
+
+  if (!projects.includes(projectId)) {
+    projects.push(projectId);
+  }
+
+  localStorage.setItem('bookmarkedProjects', JSON.stringify(projects));
+}
+
+function removeBookmarkedProject(projectId) {
+  const bookmarkedProjects = localStorage.getItem('bookmarkedProjects');
+
+  if (bookmarkedProjects) {
+    let projects = JSON.parse(bookmarkedProjects);
+    const index = projects.indexOf(projectId);
+
+    if (index !== -1) {
+      projects.splice(index, 1);
+      localStorage.setItem('bookmarkedProjects', JSON.stringify(projects));
+    }
+  }
+}
+
+// window.addEventListener('DOMContentLoaded', () => {
+//   const bookmarkedProjects = localStorage.getItem('bookmarkedProjects');
+//   console.log(bookmarkedProjects)
+//   if (bookmarkedProjects.length>=1) {
+//     const projects = JSON.parse(bookmarkedProjects);
+//     console.log(projects)
+//     projects.forEach(projectId => {
+//       const bookmarkButton = document.getElementById(projectId);
+//       bookmarkButton.style.display="none";
+//       if (bookmarkButton) {
+//         bookmarkIcon.classList.toggle('fa-check-circle');
+//         console.log("ifub");
+//       }
+//     });
+//   }
+// });
+
+    </script>
+</body>
+</html>
