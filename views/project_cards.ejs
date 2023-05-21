@@ -234,7 +234,6 @@ fetch('/api/userspage')
       backProjectButton.textContent = 'BACK PROJECT';
 
       backProjectButton.addEventListener('click',()=>{
-        // fetch('/tokensplace',{method:'GET'}).then(response=>response.json()).then(data=>{
         fetch('/cards/payment', {method: 'get'}).then(response=>{
           window.location.href = '/cards/payment';
         })
@@ -328,7 +327,6 @@ function saveProject(button) {
   fetch('/tokensplace',{method:'GET'}).then(response=>response.json()).then(data=>{
     if(data==="notValid" || data==="expired"){
       window.location.href="/login";
-      
     }
     const dataa=data.token;
     if(dataa==="Valid"){
@@ -354,7 +352,7 @@ async function attaching(button,userid){
     if (data.success) {
         if (data.bookmarked) {
           button.innerHTML = 'BOOKMARKED ';
-          // bookmarkIcon.classList.toggle('fa-check-circle');
+          bookmarkIcon.classList.toggle('fa-check-circle');
           // storeBookmarkedProject(projectId);
         } else {
           button.innerHTML = 'BOOKMARK <i class="fas fa-bookmark"></i>';
