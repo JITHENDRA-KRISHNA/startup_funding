@@ -139,16 +139,16 @@ getDataButton.addEventListener('click', () => {
         const approveButton = document.createElement('button');
         const HoldButton = document.createElement('button');
 
-        Title.innerHTML = `Title: ${item.idea_name}`;
-        Name.innerHTML = `Name: ${item.name}`;
-        Email.innerHTML = `Email: ${item.email}`;
-        Address.innerHTML = `Address: ${item.address}`;
-        MoneyToBeRaised.innerHTML = `MoneyToBeRaised: ${item.idea_money}`;
-        Time_Requested.innerHTML = `TIme_Requested: ${item.idea_time}`;
-        User_Location.innerHTML = `User_Location: ${item.idea_location}`;
-        About_Idea.innerHTML = `About_Idea: ${item.idea_details}`;
+        Title.innerHTML = `<strong>Title:</strong> ${item.idea_name}`;
+        Name.innerHTML = `<strong>Name:</strong> ${item.name}`;
+        Email.innerHTML = `<strong>Email:</strong> ${item.email}`;
+        Address.innerHTML = `<strong>Address:</strong> ${item.address}`;
+        MoneyToBeRaised.innerHTML = `<strong>Money To Be Raised:</strong> ${item.idea_money}`;
+        Time_Requested.innerHTML = `<strong>Time Requested:</strong> ${item.idea_time}`;
+        User_Location.innerHTML = `<strong>User Location:</strong> ${item.idea_location}`;
+        About_Idea.innerHTML = `<strong>About Idea:</strong> ${item.idea_details}`;
         approveButton.textContent = 'APPROVE';
-        HoldButton.textContent= 'HOLD ';
+        HoldButton.textContent = 'HOLD';
 
         Title.classList.add('textstyle')
         Name.classList.add('textstyle')
