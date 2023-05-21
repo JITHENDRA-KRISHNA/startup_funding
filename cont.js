@@ -182,7 +182,7 @@ app.post('/register',async (req,res)=>{
       if(username!=" " && userpassword.length>=6 && useremail!=" "){
         if(await db.findOne({email:useremail})){
           errorMessagess="MAIL IS ALREADY REGISTERED!!";
-          res.render("Login2.ejs",{errorMessagess})
+          res.render("login2.ejs",{errorMessagess})
           return 
         }
         const newUser = new User({
