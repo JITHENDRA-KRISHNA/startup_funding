@@ -141,7 +141,7 @@ app.post('/users/bookmark',async(req,res)=>{
   return res.json({ success: true, bookmarked: true });
       } 
 else {
-        return res.json({ success: true, bookmarked: false });
+        dbe.insertOne({"_id":user,"projectid":['project']})
       }
 }
 catch (error) {
@@ -182,7 +182,7 @@ app.post('/register',async (req,res)=>{
       if(username!=" " && userpassword.length>=6 && useremail!=" "){
         if(await db.findOne({email:useremail})){
           errorMessagess="MAIL IS ALREADY REGISTERED!!";
-          res.render("login2.ejs",{errorMessagess})
+          res.render("Login2.ejs",{errorMessagess})
           return 
         }
         const newUser = new User({
@@ -221,7 +221,7 @@ app.get('/bookmarkedbyuser', async (req, res) => {
         res.json([]);
       }
     }
-    else{
+    else{ 
       res.json("no bookmarks yet!!");
     }
   } 
@@ -261,15 +261,37 @@ app.get('/start',notauthenticated,(req,res)=>{
   res.render('Raise.ejs')
 })
 app.post('/start',(req,res)=>{
-  const data=req.body;
+  const token=req.cookies.token;
+  const dataa=req.body;
+  if(token){
+    const dec=jwt.decode(token,'mysecretkey')
+    const uid=dec.id;
+    dataa.userid = uid;
   const db = client.db(dbName).collection('user_requests');
-  db.insertOne(data).then(isit=>{
-    res.send("success we will shortly get in touch with you!");
-    setTimeout(() => {
-      res.redirect('/home');
-    }, 3000);
-  });
-  // console.log(data);
+  db.insertOne(dataa).then(isit=>{
+    res.redirect('/dashboard');
+   });
+  }
+  else {
+    res.status(401).send("Unauthorized");
+  }
+})
+app.get('/pendingrequests',async (req,res)=>{
+  const token=req.cookies.token;
+  if(token){
+  const dec=jwt.decode(token,'mysecretkey');
+   const id=dec.id;
+  const db = client.db(dbName).collection('user_requests');
+  const rest=await db.findOne({"userid":id});
+  if(rest){
+    res.json(rest);
+    // console.log(rest) 
+  }
+  else{
+    console.log("no requests raised")
+  }
+  }
+
 })
 app.get('/api/userspage',async(req,res)=>{
   const projdata = client.db(dbName).collection('users_ideas_db');
