@@ -21,13 +21,13 @@
     }
         .nav_bar {
           height: 10vh;
-          position:sticky;
+          position:fixed;
           background:transparent;
             backdrop-filter: blur(10px);
          -webkit-backdrop-filter: blur(10px);
         
         }
-    
+   
         #left-section {
             position:fixed;
             top:10vh;
@@ -39,18 +39,37 @@
           height: 90vh;
           z-index:1;
         }
-       .Frame{
-            position:fixed;
-            top:10vh;
-            right:0px;
-          width: 70%;
-          background-color: #02265c;
-          float: left;
-          height: 90vh;
-          padding: 10px;
-          border-left:1px groove  rgb(255, 255, 255);
-          overflow-y: scroll;
-        }
+
+  .Frames{
+  position:relative;
+  top:8vh;
+  left:30%;
+   right:0px;
+   background-color: #02265c;
+    width:70%;
+    height:100vh;
+    display:flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border-radius:5px;
+    justify-content:center;
+    align-items: center;
+     overflow:scroll;
+    }
+       
+.Frame {
+  display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+  width:90%;
+  overflow:scroll;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  box-shadow: 0 0 10px rgb(255, 123, 123);
+}
+.Frame>div{
+  border-bottom: 1px solid black;
+}
         .button {
           display: inline-block;
           width: 95%;
@@ -108,8 +127,8 @@
            </div>
     <div class="bodi">
       <div id="left-section">
-        <a href="/dashboard" class="button">Bookmarked</a>
-        <a href="#" class="button">Button 2</a>
+        <a  class="button" onclick="fetchbookmarks()">Bookmarked</a>
+        <a class="button" onclick="fetchAndAddData()">PENDING REQUESTS</a>
         <a href="#" class="button">Button 3</a>
         <a href="#" class="button">Button 4</a>
         <a href="/logout" class="button">LOG OUT</a>
@@ -117,15 +136,17 @@
       <div id="loadingContainer" style="display: none;z-index:10;">
         <div id="loadingAnimation"></div>
       </div>
-      <div class="Frame">
-        <!-- Right section content -->
+      <div class="Frames">
         
+        <div class="Frame">
+
+        </div>
         
       </div>
     </div>
     <script rel="text/javascript" src="main.js"></script>
     <script>
-      window.addEventListener('load',async ()=>{
+    async function fetchbookmarks(){
       const token=document.cookie;
       await fetch('/bookmarkedbyuser', { method: 'GET'})
   .then(response => response.json())
@@ -238,22 +259,50 @@ fetch('/api/userspage')
 
       container.appendChild(projectDiv);
       loadingContainer.style.display = 'none'; 
+  }});
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+};
+
+
+async function fetchAndAddData() {
+  const framesDiv = document.querySelector('.Frames');
+const frameDiv = document.querySelector('.Frame');
+frameDiv.style.display='none';
+  fetch('/pendingrequests')
+    .then(response => response.json())
+    .then(data => {
+      const dataArray = data; 
+      frameDiv.innerHTML = '';
+      console.log(dataArray)
+      for (const key in dataArray) {
+  if (dataArray.hasOwnProperty(key)&& key !== '_id'&& key!='userid') {
+    const value = dataArray[key];
+    const div = document.createElement('div');
+    div.innerHTML = `<b>${key}</b>: ${value}`;
+    div.style.fontSize = '24px'; // Set the text color to white
+    frameDiv.appendChild(div);
   }
-else{
-  loadingContainer.style.display = 'none'; 
-  container.innerHTML="NO BOOKMARKS YET !!"
-  container.style.color="white";
-  container.style.fontSize="24px";
-}});
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-});
+}
+frameDiv.style.display="block";
+framesDiv.appendChild(frameDiv);
+
+
+
+    })
+    .catch(error => {
+      console.error('An error occurred:', error);
+    });
+}
+
+
+
 
 function removeBookmark(bookmarkButton,id) {
   const projectId = id;
