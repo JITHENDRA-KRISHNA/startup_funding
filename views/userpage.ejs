@@ -311,9 +311,9 @@ fetch('/api/userspage')
       loadingContainer.style.display = 'none'; 
   }}
   else{
-    containerp.innerHTML="NO BOOKMARKS YET!!"
-    containerp.style.fontSize="24px";
-    containerp.style.color="white";
+    containerparent.innerHTML="NO BOOKMARKS YET!!"
+    containerparent.style.fontSize="24px";
+    containerparent.style.color="white";
     loadingContainer.style.display = 'none';
   }
  
@@ -338,13 +338,13 @@ const frameDiv = document.querySelector('.Frame');
     .then(response => response.json())
     .then(data => {
       const dataArray = data; 
+      if(data.message!="no requests raised"){
       frameDiv.style.display="block";
       frameDiv.style.backgroundColor="rgb(255,255,255,0.7)"
       frameDiv.style.marginTop="20vh";
       frameDiv.style.width="90%";
       frameDiv.style.marginLeft="10px";
       frameDiv.innerHTML = '';
-
       // console.log(dataArray)
       for (const key in dataArray) {
   if (dataArray.hasOwnProperty(key)&& key !== '_id'&& key!='userid') {
@@ -361,7 +361,12 @@ const editButton = document.createElement('button');
     editButton.innerHTML = 'EDIT INFO';
     frameDiv.append(editButton)
 framesDiv.appendChild(frameDiv);
-    })
+    }
+    else{
+      framesDiv.innerHTML='NO REQUESTS PENDING!!';
+    
+    }
+  })
     .catch(error => {
       console.error('An error occurred:', error);
     });
