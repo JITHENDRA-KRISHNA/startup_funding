@@ -52,7 +52,12 @@ actn.addEventListener('click', function() {
   minSlider.addEventListener('input', updateValues);
   maxSlider.addEventListener('input', updateValues);
   function updateValues() {
-	minValue.textContent = minSlider.value;
-	maxValue.textContent = maxSlider.value;
+	const min = parseInt(minSlider.value);
+		const max = parseInt(maxSlider.value);
+		if (min > max) {
+		  maxSlider.value = min;
+		}
+		minValue.textContent = minSlider.value;
+		maxValue.textContent = maxSlider.value;
   }
 
