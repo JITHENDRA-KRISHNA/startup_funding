@@ -2,10 +2,10 @@ const inputs = document.querySelectorAll(".input");
 const login_btn=document.querySelector('.btn');
 const newacc=document.querySelector('.input-div.pass2');
 const actn=document.querySelector('.hamburger');
-const fundingGoalMinInput = document.getElementById('funding-goal-min');
-const fundingGoalMaxInput = document.getElementById('funding-goal-max');
-const fundingGoalMinValue = document.getElementById('funding-goal-min-value');
-const fundingGoalMaxValue = document.getElementById('funding-goal-max-value');
+const minSlider = document.getElementById('funding-goal-min');
+const maxSlider = document.getElementById('funding-goal-max');
+const minValue = document.getElementById('funding-goal-min-value');
+const maxValue = document.getElementById('funding-goal-max-value');
 
 function addcl(){
 	let parent = this.parentNode.parentNode;
@@ -47,36 +47,12 @@ actn.addEventListener('click', function() {
 	dv.classList.toggle("exp_menu2");
 	dvl.classList.toggle("list_style");
 	dvl.classList.add("list_style:hover");
-  });		
-function new_acc(){
-	newacc.style.display="revert";
-	document.querySelector('#para').innerText="SIGN UP";
-	document.querySelector('#create').style.display="none";
-	document.querySelector('#forgot').style.display="none";
-}
+  });
+  
+  minSlider.addEventListener('input', updateValues);
+  maxSlider.addEventListener('input', updateValues);
+  function updateValues() {
+	minValue.textContent = minSlider.value;
+	maxValue.textContent = maxSlider.value;
+  }
 
-// if(newacc.style.display!="none"){
-// 	login_btn.addEventListener("click",()=>{
-// 		const pass=document.querySelector('#cred1').value;
-// 		const pass2=document.querySelector('#cred2').value;
-// 		if(pass!=pass2){
-// 		window.alert("passwords doesnt match!!");
-// 	}
-// 	})
-// }
-
-// fundingGoalMinInput.addEventListener('input', updateFundingGoalValues);
-// fundingGoalMaxInput.addEventListener('input', updateFundingGoalValues);
-// function updateFundingGoalValues() {
-//   fundingGoalMinValue.textContent = fundingGoalMinInput.value;
-//   fundingGoalMaxValue.textContent = fundingGoalMaxInput.value;
-// }
-
-// actn.addEventListener("click",()=>{
-// 	const hm1=document.getElementById("d1");
-// 	const hm2=document.getElementById("d2");
-// 	const hm3=document.getElementById("d3");
-//     hm1.classList.toggle("dv1");
-// 	hm2.classList.toggle("dv2");
-// 	hm3.classList.toggle("dv3");
-// });
