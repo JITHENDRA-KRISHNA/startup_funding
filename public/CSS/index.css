@@ -56,7 +56,7 @@ html{
     font-size:3vh;
     font-family:sans-serif
 }
-.exp_menu2{
+.exp_menu2,.lst{
     position:fixed;
     /* background:linear-gradient(10deg,rgb(201, 247, 255),rgb(211, 246, 252),rgb(194, 246, 255)); */
     /* background: radial-gradient(circle, #dcedff, #c4adff, #9b46fd); */
@@ -74,7 +74,7 @@ html{
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(10px);
 }
-.list_style{
+.list_style,.lst{
     position:fixed;
     flex-direction: column;
     height:38vh;
@@ -87,8 +87,12 @@ html{
     font-weight: bolder;
    z-index:6;
 } 
+.list_style>a{
+  text-decoration: none;
+  color: black;
+}
 .list_style>a:hover{
-   color: rgb(2, 147, 2);
+   color: rgb(250, 48, 58);
    /* filter: drop-shadow(1px 4px 5px rgba(0,0,0,0.3)); */
 }
 .hamburger{
@@ -232,7 +236,7 @@ progress{
     height:1.5vw;
 }
 
-.backp,.bookm{
+.backp,.bookm,.edit{
     padding:5%;
     width:120%;
     height:4vw;
@@ -244,9 +248,20 @@ progress{
     background-size: 300%;
     color: rgb(0, 0, 0);
 }
-.backp:hover,.bookm:hover{
+.backp:hover,.bookm:hover,.edit:hover{
      background-position: right;
+     animation: bouncy 0.8s;
 }
+
+@keyframes bouncy {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-1px); }
+  50% { transform: translateX(0); }
+  75% { transform: translateX(-1px); }
+  100% { transform: translateX(0); }
+}
+
+
 .footer{
     width: 100%;
     height:90vh;
@@ -450,13 +465,11 @@ color: rgb(0, 0, 0);
     color: #ffffff;
     border:none;
     border-radius: 5px;
-    padding:1%;
     /* font-size: 16px; */
     font-weight: bold;
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-left:4%;
   }
   
   .ios-toggle {
