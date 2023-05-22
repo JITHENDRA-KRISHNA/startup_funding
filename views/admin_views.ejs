@@ -33,7 +33,10 @@ top:30%;
 z-index:5;
 
 }
-
+.removing {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
 #loadingAnimation {
 width: 50px;
 height: 50px;
@@ -67,7 +70,7 @@ animation: spin 1.3s ease-in infinite;
     border-radius: 10px;
     padding:5%;
     margin-bottom:3%;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 .textstyle{
     font-size:3vh;
@@ -75,8 +78,8 @@ animation: spin 1.3s ease-in infinite;
     border-bottom:1px solid rgb(122, 122, 122);
     margin-bottom:10px;
     color: rgb(24, 24, 99);
-    box-shadow: -5px 5px 10px  rgb(214, 214, 214);
     border-radius: 5px;
+    box-shadow: 0 0 2px  rgb(190, 190, 190);
 }
 .buttonstyle{
     width:40%;
@@ -161,9 +164,9 @@ getDataButton.addEventListener('click', () => {
         approveButton.classList.add('approveb','buttonstyle');
         HoldButton.classList.add('approveb','buttonstyle');
         approveButton.addEventListener('click',ApproveRequest);
-        // HoldButton.addEventListener('click', HoldRequest);
+        HoldButton.addEventListener('click', removeRequest);
         approveButton.setAttribute('data-itemid', item._id); 
-        // HoldButton.setAttribute('data-itemid', item._id); 
+        HoldButton.setAttribute('data-itemid', item._id); 
        
         Title.setAttribute('data-type', 'title');
         Name.setAttribute('data-type', 'Name');
@@ -211,14 +214,35 @@ function ApproveRequest(event) {
     .then(response => console.log(response.json()))
     .then(  data => {
       console.log("data:"+JSON.stringify(data.message));
-      // Handle the response from the server as needed
     })
     .catch(error => {
-      console.error("jsm2");
-      // Handle the error scenario
+      console.error(error);
     });
 }
 
+async function removeRequest(event) {
+  const itemDiv = event.target.closest('.maincont');
+  const itemId = itemDiv.querySelector('.approveb').getAttribute('data-itemid');
+  await fetch('/removeUserRequest', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id: itemId }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message === 'Request removed successfully') {
+      itemDiv.classList.add('removing');
+      setTimeout(() => {
+        itemDiv.remove();
+      }, 500); 
+    }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
 
 
 </script>
