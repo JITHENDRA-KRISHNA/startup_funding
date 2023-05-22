@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose=require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
 const session = require('express-session')
 const User=require(__dirname+'/model/schema/userSchema.js')
@@ -293,6 +294,30 @@ app.get('/pendingrequests',async (req,res)=>{
   }
 
 })
+app.post('/removeUserRequest', async (req, res) => {
+  const { id } = req.body;
+  const { ObjectId } = require('mongodb'); // Import ObjectId from the MongoDB driver
+
+  try {
+    const dbur = client.db(dbName).collection('user_requests');
+    const objectId = new ObjectId(id); // Convert the string ID to ObjectId
+
+    const removedRequest = await dbur.findOneAndDelete({ _id: objectId });
+
+    if (!removedRequest.value) {
+      return res.status(404).json({ message: 'Request not found' });
+    }
+
+    return res.json({ message: 'Request removed successfully', id });
+    
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
 app.get('/api/userspage',async(req,res)=>{
   const projdata = client.db(dbName).collection('users_ideas_db');
   try{
@@ -323,6 +348,7 @@ app.post('/api/approve',async(req,res)=>{
   })
 })
 app.get('/cards/payment',(req,res)=>{
+
   res.render('payment.ejs'); 
 })
 app.get("/adminhome",(req,res)=>{
