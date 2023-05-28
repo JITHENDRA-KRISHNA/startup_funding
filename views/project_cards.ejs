@@ -232,11 +232,8 @@ fetch('/api/userspage')
       const backProjectButton = document.createElement('button');
       backProjectButton.classList.add('backp');
       backProjectButton.textContent = 'BACK PROJECT';
-
       backProjectButton.addEventListener('click',()=>{
-        fetch('/cards/payment', {method: 'get'}).then(response=>{
-          window.location.href = '/cards/payment';
-        })
+        backProject(backProjectButton,projectId);
       })
      
       const bookmarkButton = document.createElement('button');
@@ -323,6 +320,27 @@ function toggleFilterMenu() {
     ser.classList.add('mens')
   }
 }
+
+async function backProject(button,bid){
+  const pid=bid;
+  await fetch('/tokensplace',{method:'GET'}).then(response=>response.json()).then(data=>{
+    if(data==="notValid" || data==="expired"){
+      window.location.href="/login";
+    }
+    const dataa=data.token;
+    if(dataa==="Valid"){
+      users_id=data._id;
+      fetch('/cards/payment', {method: 'POST',headers: {'Content-Type': 'application/json'},body: JSON.stringify({"div_id":pid,"user_id":users_id})}).then(response=>response.json()).then(data=>{
+      console.log(JSON.stringify(data))
+      window.location.href = '/payment?data=' + encodeURIComponent(JSON.stringify(data));
+
+        })
+     
+    }
+  });
+  
+}
+
 function saveProject(button) {
   fetch('/tokensplace',{method:'GET'}).then(response=>response.json()).then(data=>{
     if(data==="notValid" || data==="expired"){
@@ -334,6 +352,7 @@ function saveProject(button) {
     }
   });
 }
+
 async function attaching(button,userid){
   const bookmarkIcon = button.querySelector('i.fa-bookmark');
   const projectDiv = button.closest('.projects');
