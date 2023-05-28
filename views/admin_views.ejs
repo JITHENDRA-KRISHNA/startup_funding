@@ -188,7 +188,7 @@ getDataButton.addEventListener('click', () => {
 });
 
 
-function ApproveRequest(event) {
+async function ApproveRequest(event) {
   const itemDiv = event.target.closest('.maincont');
 
   const Title = itemDiv.querySelector('.textstyle[data-type="title"]').textContent.split(":")[1];
@@ -203,17 +203,22 @@ function ApproveRequest(event) {
   const requestData = {
     Title,name ,Email,Address ,MoneyToBeRaised,Time_Requested , User_Location, About_Idea 
   };
-// alert(typeof(requestData))
-  fetch('/api/approve', {
+// alert(typeof(requestData)) console.log("data:"+JSON.stringify(data.message));
+  await fetch('/api/approve', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(requestData),
   })
-    .then(response => console.log(response.json()))
+    .then(response =>response.json())
     .then(  data => {
-      console.log("data:"+JSON.stringify(data.message));
+      if (data.message === 'Approved Successfully') {
+      itemDiv.classList.add('removing');
+      setTimeout(() => {
+        itemDiv.remove();
+      }, 500); 
+    }
     })
     .catch(error => {
       console.error(error);
