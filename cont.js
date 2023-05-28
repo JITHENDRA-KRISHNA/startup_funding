@@ -289,18 +289,19 @@ app.get('/pendingrequests',async (req,res)=>{
     // console.log(rest) 
   }
   else{
-    console.log("no requests raised")
+    res.json({message:"no requests raised"})
   }
   }
 
 })
+const { ObjectId } = require('mongodb'); 
 app.post('/removeUserRequest', async (req, res) => {
   const { id } = req.body;
-  const { ObjectId } = require('mongodb'); // Import ObjectId from the MongoDB driver
+  // const { ObjectId } = require('mongodb'); 
 
   try {
     const dbur = client.db(dbName).collection('user_requests');
-    const objectId = new ObjectId(id); // Convert the string ID to ObjectId
+    const objectId = new ObjectId(id); 
 
     const removedRequest = await dbur.findOneAndDelete({ _id: objectId });
 
@@ -309,7 +310,7 @@ app.post('/removeUserRequest', async (req, res) => {
     }
 
     return res.json({ message: 'Request removed successfully', id });
-    
+
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
@@ -347,16 +348,21 @@ app.post('/api/approve',async(req,res)=>{
     res.status(200).json({message:'Approved Successfully'})
   })
 })
-app.get('/cards/payment',(req,res)=>{
-
-  res.render('payment.ejs'); 
+app.get('/payment',(req,res)=>{
+  res.render('payment.ejs')
+})
+app.post('/cards/payment',async(req,res)=>{
+  userref=req.body.user_id;
+  projectref=req.body.div_id;
+  const dbdata = client.db(dbName).collection('users_ideas_db');
+  const objectId2 = new ObjectId(projectref); 
+  const result = await dbdata.find({"_id":objectId2}).toArray();
+  res.json(result);
 })
 app.get("/adminhome",(req,res)=>{
   res.render("adminhome.ejs")
 })
-// app.get("/request",(req,res)=>{
-//   res.render("admin_views.ejs")
-// })
+
 app.get('/dashboard',notauthenticated,(req,res)=>{
   const token=req.cookies.token;
   if(token){
