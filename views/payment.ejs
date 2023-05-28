@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="payment.css">
   <link href="https://fonts.googleapis.com/css?family=Poppins:600&amp;display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
   <title>Payment</title>
@@ -24,10 +23,16 @@ body {
   }
 .info{
       width:49%;
-      height:100vh;
-      background: linear-gradient(170deg,#bca3ed,#ae8feb,#a482e7,#9975e2);
+      min-height:70vh;
+      margin-top:10vh;
+      /* background: linear-gradient(170deg,#bca3ed,#ae8feb,#a482e7,#9975e2); */
+      background-color: #fff;
+      border-radius: 10px;
+      border:1px solid black;
+      padding:1%;
+      overflow-y: scroll;
   }
-#s {
+#s,.textdeco{
 font-size:2.5vw;
 font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 background: linear-gradient(to right, #ff7f50, #ffa500,  #9370db,#ff7f50, #ffa500);
@@ -37,6 +42,10 @@ color: transparent;
 animation: Animation 8s infinite ease-in-out;
 background-size: 300%;
 margin-top:5px;
+}
+.textdeco{
+  font-size:30px;
+  margin-left:10%;
 }
 /* #6495ed, */
 @keyframes Animation {
@@ -67,16 +76,57 @@ margin-top:5px;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+  overflow: hidden;
   }
 
-.payment-method:hover{
-      /* box-shadow: 2px 2px 5px rgb(173, 216, 252); */
-      box-shadow: 0 0 5px rgb(255, 196, 0);
+  .payment-method::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: #a9e7ff;
+  transition: height 0.5s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.payment-method:hover::before {
+  animation: borderAnimation 0.5s forwards;
+}
+
+.payment-method:not(:hover)::before {
+  animation: borderAnimationReverse 0.5s forwards;
+}
+
+@keyframes borderAnimation {
+  0% {
+    top: 100%;
+    height: 0;
   }
+  100% {
+    top: 50%;
+    height: 100%;
+  }
+}
+
+@keyframes borderAnimationReverse {
+  0% {
+    top: 50%;
+    height: 100%;
+  }
+  100% {
+    top: 100%;
+    height: 0;
+  }
+}
+
 .payment-method h2 {
     text-align: center;
     margin-bottom: 10px;
     color: #333;
+  
   }
 
 .payment-method img {
@@ -89,12 +139,28 @@ margin-top:5px;
 .payment-method p {
     text-align: center;
     color: #777;
+    z-index:10;
+  }
+  .payment-method p:hover{
+    color: rgb(201, 6, 201);
   }
 #x{
 position:absolute;
 right:2%;
 top:2.5%;
 font-size: 30px;
+}
+.projectdetailsdiv{
+  padding:5%;
+  width:85%;
+  margin-top:5%;
+  border-bottom: 1px solid black;
+}
+.projectdetailsdiv2{
+  padding:5%;
+  margin-top:5%;
+  width:80%;
+  overflow-y: scroll;
 }
 @media (max-width: 800px) {
   #s{
@@ -113,7 +179,7 @@ font-size: 30px;
   .payment-methods {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap:1%;
+    grid-gap:3%;
     margin-top: 20px;
   }
 
@@ -126,42 +192,115 @@ font-size: 30px;
 </head>
 <h1 id="s">Choose a Payment Method</h1>
 <body>
-   <a  href="/"><i id="x" class="fa fa-times-circle"></i></a>
+   <a  href="#" onclick="goBack()"><i id="x" class="fa fa-times-circle"></i></a>
   <div class="main_body">
   <div class="info">
       Info about the StartUp.
+      <ul id="info-list"></ul>
   </div>
   <div class="payment-methods">
     <div class="payment-method">
-      <h2>UPI</h2>
-      <img src="upi.jpg" alt="UPI">
+      <!-- <h2>UPI</h2> -->
+      <img src="/upi.jpg" alt="UPI"><br><br>
       <p>Pay using UPI</p>
     </div>
 
     <div class="payment-method">
-      <h2>Net Banking</h2>
-      <img src="ibk.jpg" alt="Net Banking">
+      <!-- <h2>Net Banking</h2> -->
+      <img src="/ibk.jpg" alt="Net Banking"><br><br>
       <p>Pay using Net Banking</p>
     </div>
 
     <div class="payment-method">
-      <h2>Credit/Debit Card</h2>
-      <img src="ccdc.jpg" alt="Credit/Debit Card">
+      <!-- <h2>Credit/Debit Card</h2> -->
+      <img src="/ccdc.jpg" alt="Credit/Debit Card"><br><br>
       <p>Pay using Credit/Debit Card</p>
     </div>
 
     <div class="payment-method">
-      <h2>Wallet</h2>
-      <img src="wallet.png" alt="Wallet">
+      <!-- <h2>Wallet</h2> -->
+      <img src="/wallet.png" alt="Wallet"><br><br>
       <p>Pay using Wallet</p>
     </div>
 
     <div class="payment-method">
-      <h2>Gift Vouchers</h2>
-      <img src="gc.png" alt="Gift Vouchers">
+      <!-- <h2>Gift Vouchers</h2> -->
+      <img src="/gc.png" alt="Gift Vouchers"><br><br>
       <p>Pay using Gift Vouchers</p>
     </div>
   </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const infoList = document.getElementById('info-list');
+  const infoDiv = document.querySelector('.info');
+  infoDiv.innerHTML=' ';
+  const urlParams = new URLSearchParams(window.location.search);
+  const dataParam = urlParams.get('data');
+  const data = JSON.parse(dataParam);
+  console.log("new"+' '+JSON.stringify(data))
+  const { Title, MoneyToBeRaised, Time_Requested, User_Location, About_Idea} = data[0];
+const title = data[0].Title;
+const moneyToBeRaised = data[0].MoneyToBeRaised;
+const timeRequested = data[0].Time_Requested;
+const userLocation = data[0].User_Location;
+const aboutIdea = data[0].About_Idea;
+
+const headingDiv = document.createElement('div');
+headingDiv.id = 's';
+const headingElement = document.createElement('h2');
+headingElement.classList.add('textdeco'); 
+headingElement.textContent = 'DETAILS ABOUT THE STARTUP';
+headingDiv.appendChild(headingElement);
+infoDiv.insertBefore(headingDiv, infoDiv.firstChild);
+
+// Create Title div
+const titleDiv = document.createElement('div');
+titleDiv.classList.add('projectdetailsdiv');
+const titleElement = document.createElement('p');
+titleElement.innerHTML = `<b>Title</b>: ${Title}`;
+titleDiv.appendChild(titleElement);
+infoDiv.appendChild(titleDiv);
+
+// Create MoneyToBeRaised div
+const moneyToBeRaisedDiv = document.createElement('div');
+moneyToBeRaisedDiv.classList.add('projectdetailsdiv');
+const moneyToBeRaisedElement = document.createElement('p');
+moneyToBeRaisedElement.innerHTML = `<b>MoneyToBeRaised</b>: ${MoneyToBeRaised}`;
+moneyToBeRaisedDiv.appendChild(moneyToBeRaisedElement);
+infoDiv.appendChild(moneyToBeRaisedDiv);
+
+// Create Time_Requested div
+const timeRequestedDiv = document.createElement('div');
+timeRequestedDiv.classList.add('projectdetailsdiv');
+const timeRequestedElement = document.createElement('p');
+timeRequestedElement.innerHTML = `<b>Time_Requested</b>: ${Time_Requested}`;
+timeRequestedDiv.appendChild(timeRequestedElement);
+infoDiv.appendChild(timeRequestedDiv);
+
+// Create User_Location div
+const userLocationDiv = document.createElement('div');
+userLocationDiv.classList.add('projectdetailsdiv');
+const userLocationElement = document.createElement('p');
+userLocationElement.innerHTML = `<b>User_Location</b>: ${User_Location}`;
+userLocationDiv.appendChild(userLocationElement);
+infoDiv.appendChild(userLocationDiv);
+
+// Create About_Idea div
+const aboutIdeaDiv = document.createElement('div');
+aboutIdeaDiv.classList.add('projectdetailsdiv2');
+aboutIdeaDiv.style.overflow = 'scroll';
+const aboutIdeaElement = document.createElement('p');
+aboutIdeaElement.innerHTML = `<b>About_Idea:</b><br><br> ${About_Idea}`;
+aboutIdeaDiv.appendChild(aboutIdeaElement);
+infoDiv.appendChild(aboutIdeaDiv);
+
+});
+
+function goBack() {
+    window.history.back();
+  }
+
+  </script>
 </body>
 </html>
